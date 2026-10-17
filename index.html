@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Robot Control — Study Hub</title>
+<style>
+:root{--navy:#172b49;--teal:#24596c;--ink:#10284b;--muted:#58708e;--bg:#f2f6fc;--line:#dfe7f1;--gold:#f5b544;--green:#198754;--red:#c83b4b}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+header{background:linear-gradient(115deg,var(--navy),var(--teal));color:white;text-align:center;padding:34px 18px 38px}
+header h1{font-size:clamp(2rem,4vw,3rem);margin:0 0 8px}header p{font-size:1.08rem;margin:0;color:#f1f6fc}
+main{max-width:1180px;margin:34px auto;padding:0 18px 36px}.panel{background:#fff;border-radius:26px;padding:clamp(22px,4vw,38px);box-shadow:0 12px 36px #1c35500d;margin-bottom:24px}
+h2{font-size:1.8rem;margin-top:0}h3{margin-bottom:8px}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+.card{border:2px solid var(--line);border-radius:20px;padding:22px;cursor:pointer;transition:.18s;background:white;text-align:left;color:var(--ink);font:inherit;width:100%}.card:hover{border-color:#7fa9c7;transform:translateY(-2px);box-shadow:0 8px 20px #16324c12}.icon{font-size:2rem;display:block;margin-bottom:8px}.card strong{font-size:1.25rem;display:block;margin-bottom:8px}.card span:last-child{color:var(--muted)}
+.tip{background:#fff7e8;border-left:5px solid var(--gold);padding:16px 20px;border-radius:12px;margin-top:22px}
+.hidden{display:none!important}.toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+button,.btn{border:0;border-radius:10px;padding:11px 16px;background:var(--navy);color:#fff;font-weight:700;cursor:pointer;font-size:.98rem}button.secondary{background:#e9eff7;color:var(--ink)}button:hover{filter:brightness(1.07)}
+.topic{padding:16px 0;border-bottom:1px solid var(--line)}.topic:last-child{border-bottom:0}.term{font-weight:700;color:#174f71}.equation{background:#f2f6fb;border-radius:12px;padding:14px;font-family:Consolas,monospace;overflow:auto}
+.question{border:1px solid var(--line);border-radius:15px;padding:18px;margin:15px 0}.question h3{font-size:1.05rem;margin-top:0}.options{display:grid;gap:9px}.option{background:#f6f8fc;color:var(--ink);border:1px solid #dce5f0;text-align:left;font-weight:500}.option.correct{background:#e3f6eb;border-color:#69bd8b}.option.wrong{background:#ffeaec;border-color:#df8d96}
+.feedback{margin-top:12px;padding:12px;border-radius:10px;background:#f3f6fb}.feedback.good{background:#e3f6eb}.feedback.bad{background:#ffeaec}
+.scorebox{position:sticky;top:8px;background:#fff7e8;border:1px solid #f0d49d;border-radius:12px;padding:12px;margin:12px 0;font-weight:700;z-index:2}
+.answer{margin-top:10px;padding:12px;background:#f2f6fb;border-radius:10px}.pill{display:inline-block;border-radius:99px;padding:3px 10px;background:#e8f0f8;color:#254f73;font-size:.85rem;font-weight:700}
+footer{text-align:center;color:var(--muted);padding:18px}
+@media(max-width:600px){header{padding:28px 14px}.panel{border-radius:18px}.card{padding:18px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Advanced Robot Control</h1>
+  <p>Interactive Study Hub · Summary · Essay Questions · MCQ · True or False</p>
+</header>
+<main>
+<section id="home" class="panel">
+  <h2>Where would you like to start?</h2>
+  <p class="muted">Choose a section. You can return to this menu at any time.</p>
+  <div class="grid">
+    <button class="card" onclick="showSection('summary')"><span class="icon">📘</span><strong>Lecture Summary</strong><span>Organized notes with short Arabic explanations.</span></button>
+    <button class="card" onclick="showSection('essay')"><span class="icon">✍️</span><strong>15 Essay Questions</strong><span>Model answers kept short (30 words maximum per answer).</span></button>
+    <button class="card" onclick="showSection('mcq')"><span class="icon">🎯</span><strong>30 MCQ Questions</strong><span>Choose an answer, get instant feedback, and see your score.</span></button>
+    <button class="card" onclick="showSection('tf')"><span class="icon">✅</span><strong>30 True / False</strong><span>Instant correction and final result.</span></button>
+  </div>
+  <div class="tip">Study tip: read the summary first, review the essay answers, then test yourself without looking at the notes.</div>
+</section>
+
+<section id="summary" class="panel hidden">
+  <div class="toolbar"><button class="secondary" onclick="goHome()">← Main menu</button><button onclick="window.print()">Print / Save PDF</button></div>
+  <h2>Lecture Summary</h2>
+  <p class="muted">Based on the Advanced Robot Control slides provided. Arabic notes are included to clarify the key concepts.</p>
+  <div class="topic"><h3>1. What is Advanced Robot Control?</h3><p>Advanced robot control generates commands that help a robot move accurately, smoothly, and safely despite nonlinear dynamics, coupled joints, friction, payload changes, and external disturbances.</p><p><b>بالعربي:</b> التحكم المتقدم بيخلي الروبوت يتبع الحركة المطلوبة بدقة حتى مع وجود احتكاك أو تغيّر في الحمل أو اضطرابات خارجية.</p></div>
+  <div class="topic"><h3>2. Desired trajectory and tracking error</h3><p>The planner creates a desired trajectory. Sensors measure the actual robot state, and the controller compares actual and desired values to calculate an error.</p><div class="equation">e = q<sub>d</sub> − q<br>q<sub>d</sub> = desired joint position · q = measured joint position</div><p><b>بالعربي:</b> الخطأ هو الفرق بين الوضع المطلوب والوضع الفعلي. وظيفة المتحكم تقليل هذا الفرق باستمرار.</p></div>
+  <div class="topic"><h3>3. Feedback control loop</h3><p>The main stages are high-level planning, trajectory generation, error calculation, controller computation, actuation, and sensor feedback. Repeating this loop enables corrections in real time.</p><p><b>بالعربي:</b> الحساسات تقيس الحركة، والمتحكم يقارنها بالمطلوب، ثم يرسل أوامر تصحيح للمحركات.</p></div>
+  <div class="topic"><h3>4. Why simple PID control may be insufficient</h3><p>Standard PID controllers can struggle with highly nonlinear, coupled, and changing robot dynamics, particularly when friction, payloads, and disturbances vary significantly.</p><p><b>بالعربي:</b> PID مفيد في حالات كثيرة، لكنه قد لا يعوض وحده تأثيرات الديناميكا المعقدة أو تغيّر الحمل.</p></div>
+  <div class="topic"><h3>5. Computed-Torque Control (CTC)</h3><p>CTC uses a mathematical model of robot dynamics to compensate for nonlinear effects and improve trajectory tracking.</p><div class="equation">M(q)q̈ + C(q,q̇)q̇ + G(q) + F(q̇) = τ</div><p>M represents inertia, C represents Coriolis/centrifugal effects, G represents gravity, F represents friction, and τ is the joint torque vector.</p><p><b>بالعربي:</b> CTC بيحسب تأثيرات الديناميكا المتوقعة ويعوضها باستخدام نموذج رياضي للروبوت.</p><p><b>Limitation:</b> Performance can degrade when the mathematical model is inaccurate.</p></div>
+  <div class="topic"><h3>6. Adaptive Control</h3><p>Adaptive control estimates uncertain or changing system parameters online and adjusts control actions as the robot's behavior changes. It is useful when payloads or dynamics vary.</p><p><b>بالعربي:</b> التحكم التكيفي بيتعلم أو يقدّر التغيّرات أثناء التشغيل ويعدّل الأوامر بناءً عليها.</p></div>
+  <div class="topic"><h3>7. Robust Control</h3><p>Robust control aims to maintain acceptable performance despite uncertainty and modeling errors, without necessarily estimating every uncertain parameter explicitly.</p><p><b>بالعربي:</b> التحكم القوي بيحاول يحافظ على أداء مستقر رغم وجود أخطاء أو عدم يقين في النموذج.</p></div>
+  <div class="topic"><h3>8. Sliding-Mode Control (SMC)</h3><p>SMC is a nonlinear method designed for strong robustness. It drives the system state toward a sliding surface, often defined using tracking error.</p><div class="equation">s = ė + λe</div><p>Conventional SMC may cause <b>chattering</b>: rapid switching in the control signal that can create actuator vibration and mechanical stress. Boundary layers or continuous approximations can reduce it.</p><p><b>بالعربي:</b> SMC قوي ضد الاضطرابات، لكن التبديل السريع في إشارة التحكم ممكن يسبب اهتزازات.</p></div>
+  <div class="topic"><h3>9. Disturbance Observer and Disturbance Rejection</h3><p>A disturbance observer estimates unknown external forces or disturbances. The controller can then apply a compensating action to reduce their effect on the robot.</p><p><b>بالعربي:</b> الـ Observer يقدّر الاضطراب، والمتحكم يضيف أمرًا عكسيًا لتقليل تأثيره.</p></div>
+  <div class="topic"><h3>10. Main comparison</h3><ul><li><b>CTC:</b> excellent tracking when the dynamics model is accurate.</li><li><b>Adaptive control:</b> updates estimates as parameters change.</li><li><b>Robust control:</b> tolerates uncertainty and modeling errors.</li><li><b>SMC:</b> strong disturbance robustness, but chattering must be managed.</li><li><b>Disturbance rejection:</b> estimates and compensates external effects.</li></ul></div>
+  <div class="topic"><h3>11. Applications</h3><p>Advanced control is important in industrial manipulators, collaborative robots, medical robotics, and autonomous systems that must operate safely and accurately in changing environments.</p><p><b>بالعربي:</b> التطبيقات تشمل الروبوتات الصناعية والطبية والروبوتات التي تعمل ذاتيًا في بيئات غير ثابتة.</p></div>
+</section>
+
+<section id="essay" class="panel hidden">
+  <div class="toolbar"><button class="secondary" onclick="goHome()">← Main menu</button><button onclick="toggleAllAnswers()">Show / hide all answers</button><button onclick="window.print()">Print / Save PDF</button></div>
+  <h2>15 Essay Questions</h2><p class="muted">Each model answer is under 30 words.</p><div id="essayList"></div>
+</section>
+
+<section id="mcq" class="panel hidden">
+  <div class="toolbar"><button class="secondary" onclick="goHome()">← Main menu</button><button onclick="resetQuiz('mcq')">Restart quiz</button></div>
+  <h2>30 Multiple-Choice Questions</h2><p class="muted">Select one option per question. Feedback appears immediately.</p><div id="mcqScore" class="scorebox">Answered: 0 / 30 · Correct: 0</div><div id="mcqList"></div>
+</section>
+
+<section id="tf" class="panel hidden">
+  <div class="toolbar"><button class="secondary" onclick="goHome()">← Main menu</button><button onclick="resetQuiz('tf')">Restart quiz</button></div>
+  <h2>30 True / False Questions</h2><p class="muted">Choose True or False. Incorrect statements include a correction.</p><div id="tfScore" class="scorebox">Answered: 0 / 30 · Correct: 0</div><div id="tfList"></div>
+</section>
+</main>
+<footer>Advanced Robot Control — Study Hub · Educational revision resource</footer>
+<script>
+const essays = [
+["What is the main goal of advanced robot control?","To make robots track desired motions accurately, smoothly, and safely despite complex dynamics and disturbances."],
+["What is a desired trajectory?","It is the planned sequence of robot positions, velocities, and accelerations over time."],
+["How is tracking error calculated?","Tracking error is the desired joint position minus the measured joint position: e = qd − q."],
+["Why is feedback important in robot control?","Feedback compares measured behavior with the target and lets the controller correct errors continuously."],
+["Why can a standard PID controller struggle with advanced robots?","Nonlinear dynamics, coupled joints, changing payloads, friction, and external disturbances can exceed a simple PID controller's capabilities."],
+["What is Computed-Torque Control (CTC)?","CTC uses a mathematical dynamics model to compensate for nonlinear effects and improve trajectory tracking."],
+["What does the inertia matrix M(q) represent?","It represents the robot's configuration-dependent inertia and relates joint accelerations to required torques."],
+["What do C(q,q̇) and G(q) represent?","C represents Coriolis and centrifugal effects, while G represents gravity-related torques."],
+["What is the main limitation of CTC?","Its performance can deteriorate when the assumed mathematical dynamics model is inaccurate."],
+["What is adaptive control?","Adaptive control estimates changing or uncertain parameters online and adjusts control actions accordingly."],
+["What is robust control designed to do?","It maintains acceptable control performance despite uncertainty, disturbances, and modeling errors."],
+["What is Sliding-Mode Control (SMC)?","SMC is a nonlinear control method that drives system states toward a designed sliding surface for robust tracking."],
+["What is chattering in SMC?","Chattering is rapid switching in the control signal that may cause actuator vibration, wear, and mechanical stress."],
+["What is the role of a disturbance observer?","It estimates unknown disturbances so the controller can generate compensating actions."],
+["Name two application areas of advanced robot control.","Examples include industrial and collaborative robotics, medical robotics, and autonomous robotic systems."]
+];
+const mcqs = [
+["The primary goal of advanced robot control is to:",["Make motion accurate, smooth, and safe","Remove all sensors","Increase robot weight","Avoid trajectory planning"],0,"Advanced control aims to track desired motion accurately despite complex dynamics."],
+["In e = qd − q, qd means:",["Measured position","Desired joint position","Joint torque","Friction"],1,"qd is the desired position; q is the measured position."],
+["The measured state is usually obtained using:",["Sensors","A paint tool","The trajectory name","Gravity alone"],0,"Sensors provide measurements used by the feedback loop."],
+["A feedback controller compares:",["Desired and measured values","Two unrelated files","Only motor colors","Only payload mass"],0,"The difference gives the tracking error."],
+["Which issue can challenge a standard PID controller?",["Highly nonlinear coupled dynamics","A clearly defined target","A fixed coordinate label","A printed report"],0,"Complex nonlinear and coupled effects may be difficult for standard PID control."],
+["CTC stands for:",["Computed-Torque Control","Continuous Tracking Circuit","Calculated Timing Command","Controlled Torque Calibration"],0,"CTC means Computed-Torque Control."],
+["CTC relies strongly on:",["A mathematical robot dynamics model","No model or measurements","Only a camera image","Random torque commands"],0,"CTC computes compensation from the robot's dynamic model."],
+["In the robot dynamics equation, M(q) represents:",["Inertia matrix","Friction only","Desired trajectory","Sensor noise"],0,"M(q) describes configuration-dependent inertia."],
+["In M(q)q̈ + C(q,q̇)q̇ + G(q) + F(q̇) = τ, G(q) represents:",["Gravity effects","Image resolution","Network delay","Joint position error"],0,"G(q) represents gravity-related torques."],
+["The C term commonly models:",["Coriolis and centrifugal effects","Only battery charge","The desired endpoint","Camera brightness"],0,"The C term captures Coriolis and centrifugal dynamic effects."],
+["A major CTC limitation is:",["Sensitivity to model inaccuracies","It cannot use torque","It never uses mathematics","It requires no computation"],0,"Incorrect model parameters can reduce tracking performance."],
+["Adaptive control is especially useful when:",["System parameters change","The robot is not powered","No feedback is available ever","The target is deleted"],0,"Adaptive control updates parameter estimates as the system changes."],
+["Adaptive control can estimate uncertain parameters:",["Online during operation","Only after the robot is destroyed","Never","Only from its color"],0,"Online estimation lets the controller adapt during operation."],
+["Robust control aims to maintain performance despite:",["Uncertainty and modeling errors","Only perfect models","No disturbances by definition","A lack of joints"],0,"Robust control is designed to tolerate uncertainty."],
+["SMC is a:",["Nonlinear control technique","File format","Sensor type","Trajectory drawing tool"],0,"Sliding-Mode Control is a nonlinear control method."],
+["The SMC sliding surface may be defined as:",["s = ė + λe","s = q + gravity only","s = M − G","s = τ × color"],0,"The shown surface combines tracking error and its derivative."],
+["The goal of reaching the sliding surface is to:",["Drive tracking error toward zero","Increase all errors","Disable actuators","Ignore feedback"],0,"The controller drives the state toward the surface to improve tracking."],
+["Chattering refers to:",["Rapid switching of the control signal","Slow battery charging","A sensor display","A trajectory endpoint"],0,"Rapid switching may cause vibrations and mechanical stress."],
+["A way to reduce chattering is to use:",["Boundary layers or continuous approximations","More abrupt switching","No controller","Random sensor readings"],0,"Smoothing the switching action can reduce chattering."],
+["A disturbance observer estimates:",["Unknown disturbances","The user's password","Only desired color","The robot's brand"],0,"It estimates unknown forces or disturbances affecting the system."],
+["Disturbance rejection applies a control action to:",["Compensate for disturbance effects","Amplify every disturbance","Remove the trajectory","Disable sensors"],0,"Compensation reduces the effect of external forces."],
+["An external disturbance example is:",["Unexpected contact force","A planned target point","A desired joint angle","A saved lecture title"],0,"Unexpected contact forces can disturb robot motion."],
+["High-level planning produces or helps produce:",["A desired trajectory","Only motor temperature","Only the final grade","Random force spikes"],0,"Planning converts task goals into desired motion."],
+["Actuation and execution convert controller outputs into:",["Physical robot motion","A lecture summary","A database backup","A color palette"],0,"Actuators use control commands to move the robot."],
+["Which method explicitly adapts estimates as parameters vary?",["Adaptive control","Fixed model-only CTC","No-feedback control","Open-loop random control"],0,"Adaptive control updates estimates in response to changing behavior."],
+["Which method is especially associated with robustness but may chatter?",["Sliding-Mode Control","Basic trajectory plotting","Data formatting","Open-loop playback"],0,"SMC is robust, but conventional switching can cause chattering."],
+["Which method's performance depends on accurate dynamics modeling?",["Computed-Torque Control","A plain text editor","A printed chart","A menu button"],0,"CTC depends on the accuracy of its model."],
+["Collaborative robots are designed to:",["Work safely alongside people","Operate only underwater","Avoid all sensors","Never move dynamically"],0,"Collaborative robotics emphasizes safe and reliable human-robot interaction."],
+["Medical robotics may require:",["Precise tracking and disturbance compensation","Uncontrolled motion","Large tracking errors","Random actuator commands"],0,"Medical procedures can require very precise and stable motion."],
+["A closed-loop controller uses feedback to:",["Correct deviations from the target","Ignore measured values","Guarantee a perfect model","Remove all physical forces"],0,"Feedback allows continuous correction based on measured behavior."]
+];
+const tfs = [
+["Advanced robot control aims for accurate and safe motion.",true,"This is a central goal of advanced control."],
+["Tracking error can be defined as desired position minus measured position.",true,"e = qd − q."],
+["The measured robot state is never needed in feedback control.",false,"Feedback uses sensor measurements of the actual state."],
+["A trajectory planner helps define desired motion over time.",true,"Planning and trajectory generation define desired positions and motion profiles."],
+["Standard PID always handles every nonlinear coupled robot perfectly.",false,"Complex nonlinear and coupled dynamics can challenge standard PID."],
+["CTC uses a mathematical model of robot dynamics.",true,"The model is used to compensate for dynamic effects."],
+["CTC is completely unaffected by model inaccuracies.",false,"Model inaccuracies can significantly degrade CTC performance."],
+["M(q) commonly represents the inertia matrix.",true,"It represents configuration-dependent inertia."],
+["G(q) represents gravity-related effects in the dynamics equation.",true,"The gravity term captures gravity-related torques."],
+["The C term can represent Coriolis and centrifugal effects.",true,"These are common velocity-dependent dynamic effects."],
+["Adaptive control can update estimates online.",true,"Online adaptation responds to changing parameters."],
+["Adaptive control is useful only when all parameters are fixed.",false,"It is particularly useful when parameters are uncertain or changing."],
+["Robust control seeks acceptable performance despite uncertainty.",true,"Robustness means tolerating uncertainty and modeling errors."],
+["Robust control must always estimate every uncertain parameter exactly.",false,"Robust methods can tolerate uncertainty without explicitly estimating every parameter."],
+["Sliding-Mode Control is a nonlinear control technique.",true,"SMC uses a sliding surface to guide system behavior."],
+["The sliding surface shown is s = ė + λe.",true,"This is the relation presented in the lecture slides."],
+["Chattering means the control signal switches rapidly.",true,"Rapid switching can create actuator vibrations."],
+["Chattering is always beneficial and causes no mechanical stress.",false,"It can cause vibration, wear, and mechanical stress."],
+["Boundary layers can help reduce chattering.",true,"Smoothing the switching action can reduce rapid oscillations."],
+["A disturbance observer estimates unknown external effects.",true,"The estimate can support compensating control actions."],
+["Disturbance rejection tries to amplify external disturbances.",false,"It aims to compensate for or reduce their effects."],
+["Unexpected collisions can act as external disturbances.",true,"Contact forces may disrupt the desired motion."],
+["Sensors can close the feedback loop.",true,"Measurements are returned to the controller."],
+["Actuators turn control commands into physical action.",true,"Actuators produce the robot's movement or torque."],
+["Computed-Torque Control and Adaptive Control are identical methods.",false,"CTC uses a dynamics model; adaptive control updates estimates as parameters change."],
+["SMC can provide strong robustness against disturbances.",true,"Robustness is a key motivation for SMC."],
+["Autonomous robotic systems can benefit from advanced control.",true,"They must operate reliably in changing environments."],
+["Medical robotics can require precise tracking.",true,"Precision is important in delicate medical procedures."],
+["A payload change can alter a robot's dynamic behavior.",true,"Changing mass and inertia can affect the dynamics."],
+["The controller should never compare desired and measured values.",false,"The controller compares them to calculate error and correct motion."]
+];
+
+function showSection(id){document.getElementById('home').classList.add('hidden');['summary','essay','mcq','tf'].forEach(x=>document.getElementById(x).classList.add('hidden'));document.getElementById(id).classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});}
+function goHome(){['summary','essay','mcq','tf'].forEach(x=>document.getElementById(x).classList.add('hidden'));document.getElementById('home').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});}
+function renderEssays(){const el=document.getElementById('essayList');el.innerHTML=essays.map((q,i)=>`<div class="question"><h3>${i+1}. ${q[0]}</h3><button class="secondary" onclick="this.nextElementSibling.classList.toggle('hidden')">Show model answer</button><div class="answer hidden"><b>Model answer:</b> ${q[1]} <div><span class="pill">${q[1].trim().split(/\\s+/).length} words approx.</span></div></div></div>`).join('');}
+function toggleAllAnswers(){document.querySelectorAll('#essayList .answer').forEach(a=>a.classList.toggle('hidden'))}
+const state={mcq:{answers:{},correct:0},tf:{answers:{},correct:0}};
+function renderMCQ(){document.getElementById('mcqList').innerHTML=mcqs.map((q,i)=>`<div class="question" id="mcq-q${i}"><h3>${i+1}. ${q[0]}</h3><div class="options">${q[1].map((op,j)=>`<button class="option" onclick="answerMCQ(${i},${j})">${String.fromCharCode(65+j)}. ${op}</button>`).join('')}</div><div class="feedback hidden"></div></div>`).join('');}
+function answerMCQ(i,j){if(state.mcq.answers[i]!==undefined)return;state.mcq.answers[i]=j;const q=mcqs[i],box=document.querySelector(`#mcq-q${i} .feedback`),buttons=document.querySelectorAll(`#mcq-q${i} .option`);buttons.forEach((b,k)=>{b.disabled=true;if(k===q[2])b.classList.add('correct');if(k===j&&j!==q[2])b.classList.add('wrong')});const ok=j===q[2];if(ok)state.mcq.correct++;box.classList.remove('hidden');box.classList.add(ok?'good':'bad');box.innerHTML=`<b>${ok?'Correct!':'Not quite.'}</b> ${q[3]}`;updateScore('mcq');}
+function renderTF(){document.getElementById('tfList').innerHTML=tfs.map((q,i)=>`<div class="question" id="tf-q${i}"><h3>${i+1}. ${q[0]}</h3><div class="options"><button class="option" onclick="answerTF(${i},true)">True</button><button class="option" onclick="answerTF(${i},false)">False</button></div><div class="feedback hidden"></div></div>`).join('');}
+function answerTF(i,val){if(state.tf.answers[i]!==undefined)return;state.tf.answers[i]=val;const q=tfs[i],box=document.querySelector(`#tf-q${i} .feedback`),buttons=document.querySelectorAll(`#tf-q${i} .option`);buttons.forEach(b=>b.disabled=true);const ok=val===q[1];if(ok)state.tf.correct++;box.classList.remove('hidden');box.classList.add(ok?'good':'bad');box.innerHTML=`<b>${ok?'Correct!':'Incorrect.'}</b> Correct answer: <b>${q[1]?'True':'False'}.</b> ${q[2]}`;updateScore('tf');}
+function updateScore(type){const total=type==='mcq'?mcqs.length:tfs.length;const answered=Object.keys(state[type].answers).length;document.getElementById(type+'Score').textContent=`Answered: ${answered} / ${total} · Correct: ${state[type].correct} · Score: ${Math.round(state[type].correct/total*100)}%`;}
+function resetQuiz(type){state[type]={answers:{},correct:0};if(type==='mcq')renderMCQ();else renderTF();updateScore(type);}
+renderEssays();renderMCQ();renderTF();
+</script>
+</body>
+</html>
